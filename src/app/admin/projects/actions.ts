@@ -23,10 +23,15 @@ export async function saveProject(formData: FormData) {
     const fileExt = imageFile.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
     
+    const arrayBuffer = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
     const { data: uploadData, error: uploadError } = await supabaseAdmin
       .storage
       .from('portfolio_images')
-      .upload(fileName, imageFile);
+      .upload(fileName, buffer, {
+        contentType: imageFile.type || 'image/jpeg',
+      });
 
     if (uploadError) {
       console.error('Upload Error:', uploadError);
