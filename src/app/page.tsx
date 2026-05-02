@@ -46,10 +46,10 @@ export default async function Home() {
       </section>
 
       <AnimatedSection id="about" className="py-32 px-4 md:px-12 border-b-[3px] border-foreground bg-background">
-        <h2 className="text-5xl md:text-7xl mb-16 tracking-tighter border-b-2 border-foreground inline-block pb-2">PHILOSOPHY</h2>
+        <h2 className="text-6xl md:text-8xl mb-16 tracking-tighter border-b-8 border-accent inline-block pb-2 font-black">PHILOSOPHY</h2>
         <AnimatedText 
           text={aboutText} 
-          className="text-2xl md:text-4xl lg:text-5xl font-mono leading-tight max-w-6xl uppercase"
+          className="text-3xl md:text-5xl lg:text-6xl font-mono leading-tight max-w-6xl uppercase font-bold [text-shadow:2px_2px_0_var(--muted)]"
         />
       </AnimatedSection>
 
@@ -65,33 +65,26 @@ export default async function Home() {
       <AnimatedSection id="contact" className="py-32 px-4 md:px-12 bg-foreground text-background">
         <div className="grid lg:grid-cols-2 gap-24">
           <div>
-            <h2 className="text-6xl md:text-8xl mb-12 leading-none tracking-tighter mix-blend-difference">INITIATE<br/>CONTACT</h2>
+            <h2 className="text-6xl md:text-8xl mb-12 leading-none tracking-tighter font-black">INITIATE<br/>CONTACT</h2>
             <form className="flex flex-col gap-8 font-mono text-lg">
-              <input type="text" placeholder="NAME" className="bg-transparent border-b-4 border-background p-4 outline-none focus:bg-background focus:text-foreground transition-colors placeholder:text-background/50" />
-              <input type="email" placeholder="EMAIL" className="bg-transparent border-b-4 border-background p-4 outline-none focus:bg-background focus:text-foreground transition-colors placeholder:text-background/50" />
-              <textarea placeholder="PROJECT DETAILS" rows={5} className="bg-transparent border-b-4 border-background p-4 outline-none focus:bg-background focus:text-foreground transition-colors resize-none placeholder:text-background/50"></textarea>
-              <button type="button" className="self-start border-4 border-background py-4 px-12 hover:bg-background hover:text-foreground transition-colors text-2xl font-bold tracking-widest mt-4">
+              <input type="text" placeholder="NAME" className="bg-foreground border-4 border-background p-4 outline-none focus:bg-background focus:text-foreground transition-all placeholder:text-background/50 font-bold" />
+              <input type="email" placeholder="EMAIL" className="bg-foreground border-4 border-background p-4 outline-none focus:bg-background focus:text-foreground transition-all placeholder:text-background/50 font-bold" />
+              <textarea placeholder="PROJECT DETAILS" rows={5} className="bg-foreground border-4 border-background p-4 outline-none focus:bg-background focus:text-foreground transition-all resize-none placeholder:text-background/50 font-bold"></textarea>
+              <button type="button" className="self-start bg-accent border-4 border-background py-4 px-12 hover:bg-background hover:text-foreground transition-colors text-2xl font-bold tracking-widest mt-4 shadow-[8px_8px_0_var(--background)] active:translate-y-2 active:shadow-none">
                 TRANSMIT
               </button>
             </form>
           </div>
-          <div className="font-mono flex flex-col justify-end gap-16 text-lg uppercase border-l-4 border-background/20 pl-8 lg:pl-16">
+          <div className="font-mono flex flex-col justify-end gap-16 text-lg uppercase border-l-8 border-accent pl-8 lg:pl-16">
             <div>
-              <strong className="text-2xl border-b-2 border-background inline-block mb-4">HQ</strong><br/>
-              <span className="text-xl leading-relaxed">{address}</span>
+              <strong className="text-3xl border-b-4 border-background inline-block mb-4 font-black">HQ</strong><br/>
+              <span className="text-2xl leading-relaxed font-bold">{address}</span>
             </div>
             <div>
-              <strong className="text-2xl border-b-2 border-background inline-block mb-4">COMMS</strong><br/>
-              <span className="text-xl leading-relaxed block mb-2">{email}</span>
-              <span className="text-xl leading-relaxed">{phone}</span>
+              <strong className="text-3xl border-b-4 border-background inline-block mb-4 font-black">COMMS</strong><br/>
+              <span className="text-2xl leading-relaxed block mb-2 font-bold">{email}</span>
+              <span className="text-2xl leading-relaxed font-bold">{phone}</span>
             </div>
-          </div>
-        </div>
-      </AnimatedSection>
-    </>
-  );
-}
-
           </div>
         </div>
       </AnimatedSection>
