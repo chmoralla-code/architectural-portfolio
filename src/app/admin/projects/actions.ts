@@ -20,9 +20,18 @@ export async function saveProject(formData: FormData) {
   let image_url = formData.get('current_image_url') as string;
 
   if (imageFile && imageFile.size > 0) {
-    const fileExt = imageFile.name.split('.').pop();
+    const fileExt = imageFile.name.split('.').pop()?.toLowerCase();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
     
+    let mimeType = imageFile.type;
+    if (!mimeType || mimeType === 'application/octet-stream') {
+      if (fileExt === 'png') mimeType = 'image/png';
+      else if (fileExt === 'gif') mimeType = 'image/gif';
+      else if (fileExt === 'webp') mimeType = 'image/webp';
+      else if (fileExt === 'svg') mimeType = 'image/svg+xml';
+      else mimeType = 'image/jpeg';
+    }
+
     const arrayBuffer = await imageFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
@@ -30,7 +39,7 @@ export async function saveProject(formData: FormData) {
       .storage
       .from('portfolio_images')
       .upload(fileName, buffer, {
-        contentType: imageFile.type || 'image/jpeg',
+        contentType: mimeType,
       });
 
     if (uploadError) {
