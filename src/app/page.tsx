@@ -31,15 +31,17 @@ export default async function Home() {
           <div className="w-full h-full bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
         </div>
         
-        <div className="relative z-10 mix-blend-difference text-background flex flex-col gap-6">
+        <div className="relative z-10 text-foreground flex flex-col gap-8 mt-12">
           <AnimatedText 
             text={heroTitle} 
-            className="text-[12vw] leading-[0.85] uppercase break-words tracking-tighter"
-            smoke={true}
+            className="text-[11vw] leading-[0.85] uppercase break-words tracking-tighter font-black [text-shadow:4px_4px_0_var(--muted)]"
+            smoke={false}
           />
-          <p className="font-mono max-w-lg text-base md:text-lg border-l-4 border-background pl-6 ml-2 uppercase opacity-90">
-            {heroSubtitle}
-          </p>
+          <div className="bg-foreground text-background p-4 inline-block self-start border-l-8 border-accent">
+            <p className="font-mono max-w-lg text-base md:text-xl uppercase font-bold tracking-tight">
+              {heroSubtitle}
+            </p>
+          </div>
         </div>
       </section>
 
@@ -53,8 +55,8 @@ export default async function Home() {
 
       <section className="bg-background w-full py-24 min-h-screen border-b-[3px] border-foreground">
         <AnimatedSection className="px-4 md:px-12 pb-12 flex flex-col md:flex-row md:justify-between md:items-end border-b-[3px] border-foreground mb-12 gap-4">
-          <h2 className="text-7xl md:text-9xl leading-[0.85] tracking-tighter">SELECTED<br/>WORKS</h2>
-          <span className="font-mono text-2xl md:text-4xl border-2 border-foreground p-4 bg-foreground text-background">[{projects?.length || 0}]</span>
+          <h2 className="text-7xl md:text-9xl leading-[0.85] tracking-tighter font-black uppercase">SELECTED<br/>WORKS</h2>
+          <span className="font-mono text-2xl md:text-4xl border-4 border-foreground p-4 bg-accent text-background font-bold shadow-[8px_8px_0_var(--foreground)]">[{projects?.length || 0}]</span>
         </AnimatedSection>
         
         <ProjectGrid projects={projects || []} />
@@ -83,6 +85,13 @@ export default async function Home() {
               <span className="text-xl leading-relaxed block mb-2">{email}</span>
               <span className="text-xl leading-relaxed">{phone}</span>
             </div>
+          </div>
+        </div>
+      </AnimatedSection>
+    </>
+  );
+}
+
           </div>
         </div>
       </AnimatedSection>

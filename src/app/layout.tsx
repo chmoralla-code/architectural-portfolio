@@ -30,12 +30,14 @@ export default function RootLayout({
       className={`${inter.variable} ${robotoMono.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col selection:bg-foreground selection:text-background">
-        <header className="fixed top-0 w-full flex justify-between p-4 mix-blend-difference z-50 text-background">
-          <div className="font-bold text-xl uppercase tracking-tighter">ARCH // STUDIO</div>
-          <nav className="font-mono text-sm uppercase flex gap-6">
-            <a href="#work" className="hover:line-through">Work</a>
-            <a href="#about" className="hover:line-through">About</a>
-            <a href="#contact" className="hover:line-through">Contact</a>
+        <header className="fixed top-0 w-full flex justify-between p-5 z-50 text-foreground bg-background/90 backdrop-blur-md border-b-4 border-foreground shadow-sm">
+          <div className="font-bold text-2xl uppercase tracking-tighter flex items-center gap-2">
+            <span className="bg-foreground text-background px-2 py-1">ARCH</span> // STUDIO
+          </div>
+          <nav className="font-mono text-sm font-bold uppercase flex gap-8 items-center">
+            <a href="#work" className="hover:bg-foreground hover:text-background px-2 py-1 transition-colors border-2 border-transparent hover:border-foreground">Work</a>
+            <a href="#about" className="hover:bg-foreground hover:text-background px-2 py-1 transition-colors border-2 border-transparent hover:border-foreground">About</a>
+            <a href="#contact" className="hover:bg-foreground hover:text-background px-2 py-1 transition-colors border-2 border-transparent hover:border-foreground">Contact</a>
           </nav>
         </header>
         <main className="flex-1">{children}</main>
