@@ -23,9 +23,15 @@ export async function submitContact(formData: FormData) {
     return { error: 'FAILED TO TRANSMIT MESSAGE. PLEASE TRY AGAIN.' };
   }
 
-  // Send Telegram Notification
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  // Get Telegram config from database
+  const { data: info } = await supabaseAdmin
+    .from('portfolio_info')
+    .select('telegram_bot_token, telegram_chat_id')
+    .eq('id', 1)
+    .single();
+
+  const botToken = info?.telegram_bot_token || process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = info?.telegram_chat_id || process.env.TELEGRAM_CHAT_ID;
 
   if (botToken && chatId) {
     const text = `🚨 *NEW CONTACT INITIATED* 🚨\n\n👤 *NAME:* ${name}\n✉️ *EMAIL:* ${email}\n📝 *DETAILS:* ${details}`;
@@ -44,8 +50,6 @@ export async function submitContact(formData: FormData) {
       });
     } catch (err) {
       console.error('Failed to send Telegram notification:', err);
-      // We don't return an error to the user if the notification fails, 
-      // as the message is already saved in the DB.
     }
   }
 
