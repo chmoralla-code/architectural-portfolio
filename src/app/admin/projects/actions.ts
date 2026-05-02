@@ -44,9 +44,17 @@ export async function saveProject(formData: FormData) {
   const projectData = { title, client, year, description, image_url };
 
   if (id) {
-    await supabaseAdmin.from('projects').update(projectData).eq('id', id);
+    const { error } = await supabaseAdmin.from('projects').update(projectData).eq('id', id);
+    if (error) {
+      console.error('Update Error:', error);
+      return { error: error.message || 'Failed to update project.' };
+    }
   } else {
-    await supabaseAdmin.from('projects').insert(projectData);
+    const { error } = await supabaseAdmin.from('projects').insert(projectData);
+    if (error) {
+      console.error('Insert Error:', error);
+      return { error: error.message || 'Failed to create project.' };
+    }
   }
 
   revalidatePath('/admin/projects');

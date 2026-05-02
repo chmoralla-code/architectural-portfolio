@@ -10,13 +10,23 @@ export default function ProjectModal({ project }: { project?: any }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    const formData = new FormData(e.currentTarget);
-    if (project?.id) formData.append('id', project.id);
-    if (project?.image_url) formData.append('current_image_url', project.image_url);
-    
-    await saveProject(formData);
-    setLoading(false);
-    setOpen(false);
+    try {
+      const formData = new FormData(e.currentTarget);
+      if (project?.id) formData.append('id', project.id);
+      if (project?.image_url) formData.append('current_image_url', project.image_url);
+      
+      const res = await saveProject(formData);
+      if (res && res.error) {
+        alert(res.error);
+      } else {
+        setOpen(false);
+      }
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || 'An error occurred while saving the project.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
