@@ -43,7 +43,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
           }}
           className="group relative border-[3px] border-foreground shadow-brut hover:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[16px_16px_0px_0px_rgba(255,255,255,1)] transition-all duration-300 bg-background overflow-hidden flex flex-col"
         >
-          <div className="aspect-[4/3] bg-muted w-full relative overflow-hidden mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-500">
+          <div className="aspect-[4/3] bg-muted w-full relative overflow-hidden transition-all duration-500">
             {project.image_url ? (
                // eslint-disable-next-line @next/next/no-img-element
               <motion.img 
@@ -56,7 +56,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
               <div className="w-full h-full flex items-center justify-center font-mono text-background bg-foreground text-2xl">NO IMAGE</div>
             )}
             
-            <div className="absolute inset-0 bg-foreground/20 mix-blend-overlay group-hover:bg-transparent transition-colors duration-500" />
+            <div className="absolute inset-0 bg-foreground/10 mix-blend-overlay group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
           </div>
           
           <div className="p-6 md:p-8 border-t-[3px] border-foreground bg-background group-hover:bg-foreground group-hover:text-background transition-colors duration-300 flex-1 flex flex-col justify-between">
