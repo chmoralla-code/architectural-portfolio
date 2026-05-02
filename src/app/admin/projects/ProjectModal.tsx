@@ -107,7 +107,7 @@ export default function ProjectModal({ project }: { project?: any }) {
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
-            <button onClick={() => setOpen(false)} className="absolute top-4 right-4 font-mono text-xl hover:text-accent">&times;</button>
+            <button type="button" onClick={() => setOpen(false)} className="absolute top-2 right-2 font-mono text-3xl hover:text-accent z-50 p-2 leading-none cursor-pointer">&times;</button>
             <h2 className="text-2xl mb-6">{project ? 'EDIT' : 'NEW'} PROJECT</h2>
             
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 font-mono text-sm">

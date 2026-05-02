@@ -2,6 +2,7 @@ import ProjectGrid from "@/components/ProjectGrid";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { supabase } from "@/lib/supabase";
 import { AnimatedSection, AnimatedText } from "@/components/AnimatedSection";
+import ContactForm from "./ContactForm";
 
 export const revalidate = 0;
 
@@ -31,10 +32,10 @@ export default async function Home() {
           <div className="w-full h-full bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
         </div>
         
-        <div className="relative z-10 text-foreground flex flex-col gap-8 mt-12">
+        <div className="relative z-10 text-foreground flex flex-col gap-6 md:gap-8 mt-12 md:mt-24">
           <AnimatedText 
             text={heroTitle} 
-            className="text-[11vw] leading-[0.85] uppercase break-words tracking-tighter font-black [text-shadow:4px_4px_0_var(--muted)]"
+            className="text-6xl sm:text-8xl md:text-[11vw] leading-[0.85] uppercase break-words tracking-tighter font-black [text-shadow:3px_3px_0_var(--muted)] md:[text-shadow:4px_4px_0_var(--muted)]"
             smoke={false}
           />
           <div className="bg-foreground text-background p-4 inline-block self-start border-l-8 border-accent">
@@ -66,14 +67,7 @@ export default async function Home() {
         <div className="grid lg:grid-cols-2 gap-24">
           <div>
             <h2 className="text-6xl md:text-8xl mb-12 leading-none tracking-tighter font-black">INITIATE<br/>CONTACT</h2>
-            <form className="flex flex-col gap-8 font-mono text-lg">
-              <input type="text" placeholder="NAME" className="bg-foreground border-4 border-background p-4 outline-none focus:bg-background focus:text-foreground transition-all placeholder:text-background/50 font-bold" />
-              <input type="email" placeholder="EMAIL" className="bg-foreground border-4 border-background p-4 outline-none focus:bg-background focus:text-foreground transition-all placeholder:text-background/50 font-bold" />
-              <textarea placeholder="PROJECT DETAILS" rows={5} className="bg-foreground border-4 border-background p-4 outline-none focus:bg-background focus:text-foreground transition-all resize-none placeholder:text-background/50 font-bold"></textarea>
-              <button type="button" className="self-start bg-accent border-4 border-background py-4 px-12 hover:bg-background hover:text-foreground transition-colors text-2xl font-bold tracking-widest mt-4 shadow-[8px_8px_0_var(--background)] active:translate-y-2 active:shadow-none">
-                TRANSMIT
-              </button>
-            </form>
+            <ContactForm />
           </div>
           <div className="font-mono flex flex-col justify-end gap-16 text-lg uppercase border-l-8 border-accent pl-8 lg:pl-16">
             <div>

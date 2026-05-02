@@ -10,6 +10,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <nav className="flex flex-col gap-4 font-mono text-sm">
             <Link href="/admin" className="hover:line-through">GLOBAL INFO</Link>
             <Link href="/admin/projects" className="hover:line-through">PROJECTS</Link>
+            <Link href="/admin/inbox" className="hover:line-through">INBOX</Link>
             <a href="/" target="_blank" className="hover:line-through mt-8">VIEW SITE &#8599;</a>
           </nav>
         </div>
