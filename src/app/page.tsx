@@ -35,6 +35,7 @@ export default async function Home() {
           <AnimatedText 
             text={heroTitle} 
             className="text-[12vw] leading-[0.85] uppercase break-words tracking-tighter"
+            smoke={true}
           />
           <p className="font-mono max-w-lg text-base md:text-lg border-l-4 border-background pl-6 ml-2 uppercase opacity-90">
             {heroSubtitle}

@@ -18,14 +18,14 @@ export function AnimatedSection({ children, className, id, delay = 0 }: { childr
   );
 }
 
-export function AnimatedText({ text, className }: { text: string, className?: string }) {
+export function AnimatedText({ text, className, smoke = false }: { text: string, className?: string, smoke?: boolean }) {
   const words = text.split(" ");
   
   const container: Variants = {
     hidden: { opacity: 0 },
     visible: (i = 1) => ({
       opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.04 * i },
+      transition: { staggerChildren: smoke ? 0.15 : 0.1, delayChildren: 0.1 * i },
     }),
   };
 
@@ -33,11 +33,18 @@ export function AnimatedText({ text, className }: { text: string, className?: st
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: "spring", damping: 12, stiffness: 100 },
+      filter: "blur(0px)",
+      transition: { 
+        type: "spring", 
+        damping: smoke ? 25 : 12, 
+        stiffness: smoke ? 80 : 100, 
+        duration: smoke ? 1.5 : undefined 
+      },
     },
     hidden: {
       opacity: 0,
-      y: 50,
+      y: smoke ? 20 : 50,
+      filter: smoke ? "blur(12px)" : "blur(0px)",
       transition: { type: "spring", damping: 12, stiffness: 100 },
     },
   };
