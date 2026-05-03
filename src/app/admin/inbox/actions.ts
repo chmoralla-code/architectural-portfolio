@@ -47,3 +47,46 @@ export async function saveTelegramConfig(formData: FormData) {
   revalidatePath('/admin/inbox');
   return { success: true };
 }
+
+export async function testTelegramNotification() {
+  const { data: info } = await supabaseAdmin
+    .from('portfolio_info')
+    .select('telegram_bot_token, telegram_chat_id')
+    .eq('id', 1)
+    .single();
+
+  const botToken = info?.telegram_bot_token;
+  const chatId = info?.telegram_chat_id;
+
+  if (!botToken || !chatId) {
+    return { error: 'TELEGRAM CONFIGURATION MISSING.' };
+  }
+
+  const text = `<b>[ ARCH // STUDIO ] TEST NOTIFICATION</b>\n` +
+               `━━━━━━━━━━━━━━━━━━━━\n` +
+               `STATUS: <b>SUCCESSFUL</b>\n` +
+               `TIME: <b>${new Date().toLocaleString()}</b>\n\n` +
+               `THIS IS A TEST MESSAGE TO VERIFY YOUR TELEGRAM INTEGRATION IS WORKING CORRECTLY.\n` +
+               `━━━━━━━━━━━━━━━━━━━━`;
+
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text,
+        parse_mode: 'HTML',
+      }),
+    });
+    
+    if (!res.ok) {
+      const errData = await res.json();
+      return { error: errData.description || 'TELEGRAM API ERROR' };
+    }
+    
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || 'CONNECTION FAILED' };
+  }
+}

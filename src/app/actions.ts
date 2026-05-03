@@ -34,7 +34,23 @@ export async function submitContact(formData: FormData) {
   const chatId = info?.telegram_chat_id || process.env.TELEGRAM_CHAT_ID;
 
   if (botToken && chatId) {
-    const text = `🚨 *NEW CONTACT INITIATED* 🚨\n\n👤 *NAME:* ${name}\n✉️ *EMAIL:* ${email}\n📝 *DETAILS:* ${details}`;
+    const timestamp = new Date().toLocaleString('en-US', { 
+      timeZone: 'UTC', 
+      hour12: true,
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    const text = `<b>[ ARCH // STUDIO ] INCOMING CONTACT</b>\n` +
+                 `━━━━━━━━━━━━━━━━━━━━\n` +
+                 `<b>SENDER:</b> ${name.toUpperCase()}\n` +
+                 `<b>EMAIL:</b> ${email.toLowerCase()}\n` +
+                 `<b>TIME:</b> ${timestamp} UTC\n\n` +
+                 `<b>MESSAGE:</b>\n<i>${details}</i>\n` +
+                 `━━━━━━━━━━━━━━━━━━━━`;
     
     try {
       await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -45,7 +61,7 @@ export async function submitContact(formData: FormData) {
         body: JSON.stringify({
           chat_id: chatId,
           text: text,
-          parse_mode: 'Markdown',
+          parse_mode: 'HTML',
         }),
       });
     } catch (err) {

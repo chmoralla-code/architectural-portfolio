@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { saveTelegramConfig } from './actions';
+import { saveTelegramConfig, testTelegramNotification } from './actions';
 
 export default function TelegramConfigClient({ currentToken, currentChatId }: { currentToken: string, currentChatId: string }) {
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [testLoading, setTestLoading] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'success' | 'error' | 'test_success'>('idle');
   const [errMsg, setErrMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,6 +29,20 @@ export default function TelegramConfigClient({ currentToken, currentChatId }: { 
     setTimeout(() => {
       setStatus('idle');
     }, 4000);
+  };
+
+  const handleTest = async () => {
+    setTestLoading(true);
+    setStatus('idle');
+    const res = await testTelegramNotification();
+    if (res.error) {
+      setStatus('error');
+      setErrMsg(res.error);
+    } else {
+      setStatus('test_success');
+    }
+    setTestLoading(false);
+    setTimeout(() => setStatus('idle'), 4000);
   };
 
   return (
@@ -67,8 +82,18 @@ export default function TelegramConfigClient({ currentToken, currentChatId }: { 
           >
             {loading ? 'SAVING...' : 'SAVE CONFIG'}
           </button>
+
+          <button 
+            type="button"
+            onClick={handleTest}
+            disabled={testLoading || !currentToken} 
+            className="border-2 border-foreground bg-transparent text-foreground px-8 py-3 font-bold uppercase hover:bg-foreground hover:text-background transition-colors disabled:opacity-50"
+          >
+            {testLoading ? 'TESTING...' : 'TEST CONNECTION'}
+          </button>
           
           {status === 'success' && <span className="text-accent font-bold uppercase animate-pulse">SAVED! TEST MESSAGE SENT.</span>}
+          {status === 'test_success' && <span className="text-accent font-bold uppercase animate-pulse">TEST MESSAGE SENT!</span>}
           {status === 'error' && <span className="text-foreground font-bold uppercase">{errMsg}</span>}
         </div>
       </form>

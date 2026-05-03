@@ -140,7 +140,7 @@ export default function ProjectModal({ project }: { project?: any }) {
                   </div>
                 )}
 
-                <div className="border-2 border-dashed border-foreground/50 p-4 text-center hover:bg-foreground/5 transition-colors">
+                <div className="border-2 border-dashed border-foreground/50 p-4 text-center hover:bg-foreground/5 transition-colors relative">
                   <input 
                     ref={fileInputRef}
                     name="image" 

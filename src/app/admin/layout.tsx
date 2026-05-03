@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-background text-foreground">
-      <aside className="w-full md:w-64 border-b-2 md:border-b-0 md:border-r-2 border-foreground p-6 flex flex-col justify-between shrink-0">
+    <div className="min-h-screen flex flex-col md:flex-row bg-background text-foreground relative z-[100]">
+      <aside className="w-full md:w-64 border-b-2 md:border-b-0 md:border-r-2 border-foreground p-6 flex flex-col justify-between shrink-0 bg-background relative z-[101]">
         <div>
           <h2 className="text-2xl font-bold mb-8 uppercase tracking-tighter">CONTROL<br/>PANEL</h2>
           <nav className="flex flex-col gap-4 font-mono text-sm">
