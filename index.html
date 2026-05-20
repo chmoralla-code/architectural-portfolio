@@ -365,36 +365,41 @@
           </div>
         </div>
 
-        <!-- Portfolio grid displaying interactive panels -->
-        <div class="work-grid">
+        <!-- Portfolio gallery displaying expanding video cards -->
+        <div class="work-gallery">
           
           <!-- WORK ITEM 01 -->
-          <div class="work-panel magnetic-target" data-id="1">
+          <div class="gallery-card magnetic-target" data-id="1">
             <div class="panel-blueprint-grid"></div>
             <div class="panel-border-corner top-l"></div>
             <div class="panel-border-corner top-r"></div>
             <div class="panel-border-corner bottom-l"></div>
             <div class="panel-border-corner bottom-r"></div>
             
-            <div class="panel-img-frame">
-              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777731099352-8k64q.jpg" alt="Lending Website" class="panel-img">
-              <div class="panel-overlay-tech font-mono">
-                <span>FRONTEND: HTML5 / VANILLA_JS</span>
-                <span>STYLING: MODERN_CSS_GRID</span>
-                <span>STATUS: LIVE // DEPLOYED</span>
-              </div>
+            <div class="card-media-frame">
+              <video class="card-video" src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/work_video_1.mp4" loop muted playsinline></video>
+              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777731099352-8k64q.jpg" alt="Lending Website" class="card-poster-img">
+              <div class="card-video-overlay-tint"></div>
             </div>
 
-            <div class="panel-info">
-              <div class="panel-meta font-mono">
+            <!-- Sideways vertical label when collapsed -->
+            <div class="card-vertical-label font-mono">
+              <span class="label-index">01</span>
+              <span class="label-slash">/</span>
+              <span class="label-title font-space">LENDING WEBSITE</span>
+            </div>
+
+            <!-- Glassmorphic slider panel when expanded -->
+            <div class="card-content-overlay">
+              <div class="card-meta font-mono">
                 <span class="meta-client">CLIENT: FOREIGN CLIENT</span>
                 <span class="meta-year">[2026]</span>
               </div>
-              <h3 class="panel-title font-space">LENDING WEBSITE</h3>
-              <p class="panel-description">Engineered to streamline and automate transaction workflows. Features structural form validation, high-speed calculations, and visual transaction tracking.</p>
+              <h3 class="card-title font-space">LENDING WEBSITE</h3>
+              <p class="card-description">Engineered to streamline and automate transaction workflows. Features structural form validation, high-speed calculations, and visual transaction tracking.</p>
               
               <!-- Blueprint technical specs foldout -->
-              <div class="panel-schematic font-mono">
+              <div class="card-schematic font-mono">
                 <div class="sch-row"><span class="label">MODULE_ID:</span><span class="val text-cyan">T-LEND-01</span></div>
                 <div class="sch-row"><span class="label">LATENCY_F:</span><span class="val">~0.12s</span></div>
                 <div class="sch-row"><span class="label">SCALE_FACTOR:</span><span class="val text-orange">1.0</span></div>
@@ -403,31 +408,34 @@
           </div>
 
           <!-- WORK ITEM 02 -->
-          <div class="work-panel magnetic-target" data-id="2">
+          <div class="gallery-card magnetic-target" data-id="2">
             <div class="panel-blueprint-grid"></div>
             <div class="panel-border-corner top-l"></div>
             <div class="panel-border-corner top-r"></div>
             <div class="panel-border-corner bottom-l"></div>
             <div class="panel-border-corner bottom-r"></div>
             
-            <div class="panel-img-frame">
-              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777731486275-2v4aq.jpg" alt="Personal PisoWiFi" class="panel-img">
-              <div class="panel-overlay-tech font-mono">
-                <span>ENGINE: captive_portal</span>
-                <span>AUTHENTICATION: referral_auth</span>
-                <span>INTERFACE: custom_css</span>
-              </div>
+            <div class="card-media-frame">
+              <video class="card-video" src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/work_video_2.mp4" loop muted playsinline></video>
+              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777731486275-2v4aq.jpg" alt="Personal PisoWiFi" class="card-poster-img">
+              <div class="card-video-overlay-tint"></div>
             </div>
 
-            <div class="panel-info">
-              <div class="panel-meta font-mono">
+            <div class="card-vertical-label font-mono">
+              <span class="label-index">02</span>
+              <span class="label-slash">/</span>
+              <span class="label-title font-space">PERSONAL PISOWIFI</span>
+            </div>
+
+            <div class="card-content-overlay">
+              <div class="card-meta font-mono">
                 <span class="meta-client">CLIENT: PERSONAL</span>
                 <span class="meta-year">[2026]</span>
               </div>
-              <h3 class="panel-title font-space">PERSONAL PISOWIFI</h3>
-              <p class="panel-description">Custom captive portal system designed to handle high transaction throughput, featuring elegant user validation, automated data provisioning, and integrated billing.</p>
+              <h3 class="card-title font-space">PERSONAL PISOWIFI</h3>
+              <p class="card-description">Custom captive portal system designed to handle high transaction throughput, featuring elegant user validation, automated data provisioning, and integrated billing.</p>
               
-              <div class="panel-schematic font-mono">
+              <div class="card-schematic font-mono">
                 <div class="sch-row"><span class="label">MODULE_ID:</span><span class="val text-cyan">P-WIFI-02</span></div>
                 <div class="sch-row"><span class="label">BANDWIDTH:</span><span class="val">OPT_DYN</span></div>
                 <div class="sch-row"><span class="label">ENCRYPTION:</span><span class="val text-orange">AES_256</span></div>
@@ -436,31 +444,34 @@
           </div>
 
           <!-- WORK ITEM 03 -->
-          <div class="work-panel magnetic-target" data-id="3">
+          <div class="gallery-card magnetic-target" data-id="3">
             <div class="panel-blueprint-grid"></div>
             <div class="panel-border-corner top-l"></div>
             <div class="panel-border-corner top-r"></div>
             <div class="panel-border-corner bottom-l"></div>
             <div class="panel-border-corner bottom-r"></div>
             
-            <div class="panel-img-frame">
-              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777733575678-d7lex.jpg" alt="Facebook Boosting Website" class="panel-img">
-              <div class="panel-overlay-tech font-mono">
-                <span>SERVICE: fb_api_boost</span>
-                <span>DISPATCH: automatic</span>
-                <span>SYSTEM: async_task</span>
-              </div>
+            <div class="card-media-frame">
+              <video class="card-video" src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/work_video_3.mp4" loop muted playsinline></video>
+              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777733575678-d7lex.jpg" alt="Facebook Boosting Website" class="card-poster-img">
+              <div class="card-video-overlay-tint"></div>
             </div>
 
-            <div class="panel-info">
-              <div class="panel-meta font-mono">
+            <div class="card-vertical-label font-mono">
+              <span class="label-index">03</span>
+              <span class="label-slash">/</span>
+              <span class="label-title font-space">FACEBOOK BOOSTING</span>
+            </div>
+
+            <div class="card-content-overlay">
+              <div class="card-meta font-mono">
                 <span class="meta-client">CLIENT: PERSONAL</span>
                 <span class="meta-year">[2026]</span>
               </div>
-              <h3 class="panel-title font-space">FACEBOOK BOOSTING</h3>
-              <p class="panel-description">Automation web suite triggering asynchronous post engagements. Dramatically improves public page visibility and brand recognition through programmatic dispatchers.</p>
+              <h3 class="card-title font-space">FACEBOOK BOOSTING</h3>
+              <p class="card-description">Automation web suite triggering asynchronous post engagements. Dramatically improves public page visibility and brand recognition through programmatic dispatchers.</p>
               
-              <div class="panel-schematic font-mono">
+              <div class="card-schematic font-mono">
                 <div class="sch-row"><span class="label">MODULE_ID:</span><span class="val text-cyan">A-FB-03</span></div>
                 <div class="sch-row"><span class="label">API_PING:</span><span class="val">~45ms</span></div>
                 <div class="sch-row"><span class="label">SCALING_VAL:</span><span class="val text-orange">MAX_THR</span></div>
@@ -469,31 +480,34 @@
           </div>
 
           <!-- WORK ITEM 04 -->
-          <div class="work-panel magnetic-target" data-id="4">
+          <div class="gallery-card magnetic-target" data-id="4">
             <div class="panel-blueprint-grid"></div>
             <div class="panel-border-corner top-l"></div>
             <div class="panel-border-corner top-r"></div>
             <div class="panel-border-corner bottom-l"></div>
             <div class="panel-border-corner bottom-r"></div>
             
-            <div class="panel-img-frame">
-              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777818565209-mp88.png" alt="Bohol Shopping Local" class="panel-img">
-              <div class="panel-overlay-tech font-mono">
-                <span>PLATFORM: localized_ecom</span>
-                <span>ROUTING: geofenced</span>
-                <span>STACK: HTML5 / CSS3 / JS</span>
-              </div>
+            <div class="card-media-frame">
+              <video class="card-video" src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/work_video_4.mp4" loop muted playsinline></video>
+              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777818565209-mp88.png" alt="Bohol Shopping Local" class="card-poster-img">
+              <div class="card-video-overlay-tint"></div>
             </div>
 
-            <div class="panel-info">
-              <div class="panel-meta font-mono">
+            <div class="card-vertical-label font-mono">
+              <span class="label-index">04</span>
+              <span class="label-slash">/</span>
+              <span class="label-title font-space">BOHOL LOCAL</span>
+            </div>
+
+            <div class="card-content-overlay">
+              <div class="card-meta font-mono">
                 <span class="meta-client">CLIENT: LOCAL BOHOL</span>
                 <span class="meta-year">[2026]</span>
               </div>
-              <h3 class="panel-title font-space">BOHOL SHOPPING LOCAL</h3>
-              <p class="panel-description">Optimized local ecommerce platform engineered to decrease delivery delays and maximize transaction speeds within Tagbilaran City using localized routing networks.</p>
+              <h3 class="card-title font-space">BOHOL LOCAL</h3>
+              <p class="card-description">Optimized local ecommerce platform engineered to decrease delivery delays and maximize transaction speeds within Tagbilaran City using localized routing networks.</p>
               
-              <div class="panel-schematic font-mono">
+              <div class="card-schematic font-mono">
                 <div class="sch-row"><span class="label">MODULE_ID:</span><span class="val text-cyan">E-SHOP-04</span></div>
                 <div class="sch-row"><span class="label">GEO_GATE:</span><span class="val">BOHOL_6300</span></div>
                 <div class="sch-row"><span class="label">SPEED_INDEX:</span><span class="val text-orange">A+ // OPT</span></div>
@@ -502,31 +516,34 @@
           </div>
 
           <!-- WORK ITEM 05 -->
-          <div class="work-panel magnetic-target" data-id="5">
+          <div class="gallery-card magnetic-target" data-id="5">
             <div class="panel-blueprint-grid"></div>
             <div class="panel-border-corner top-l"></div>
             <div class="panel-border-corner top-r"></div>
             <div class="panel-border-corner bottom-l"></div>
             <div class="panel-border-corner bottom-r"></div>
             
-            <div class="panel-img-frame">
-              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1778482556323-3cdya9.png" alt="Cyrhiel AI" class="panel-img">
-              <div class="panel-overlay-tech font-mono">
-                <span>CORE: generative_ai</span>
-                <span>HOSTING: vercel_edge</span>
-                <span>INTEGRATION: openai_api</span>
-              </div>
+            <div class="card-media-frame">
+              <video class="card-video" src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/work_video_5.mp4" loop muted playsinline></video>
+              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1778482556323-3cdya9.png" alt="Cyrhiel AI" class="card-poster-img">
+              <div class="card-video-overlay-tint"></div>
             </div>
 
-            <div class="panel-info">
-              <div class="panel-meta font-mono">
+            <div class="card-vertical-label font-mono">
+              <span class="label-index">05</span>
+              <span class="label-slash">/</span>
+              <span class="label-title font-space">AI AGENT PORTAL</span>
+            </div>
+
+            <div class="card-content-overlay">
+              <div class="card-meta font-mono">
                 <span class="meta-client">HOST: CYRHIELAI</span>
                 <span class="meta-year">[2026]</span>
               </div>
-              <h3 class="panel-title font-space">AI AGENT PORTAL</h3>
-              <p class="panel-description">An advanced, highly interactive artificial intelligence interface hosted on Vercel Edge. Performs automated data processing, structural text analysis, and automation scheduling.</p>
+              <h3 class="card-title font-space">AI AGENT PORTAL</h3>
+              <p class="card-description">An advanced, highly interactive artificial intelligence interface hosted on Vercel Edge. Performs automated data processing, structural text analysis, and automation scheduling.</p>
               
-              <div class="panel-schematic font-mono">
+              <div class="card-schematic font-mono">
                 <div class="sch-row"><span class="label">MODULE_ID:</span><span class="val text-cyan">AI-TERM-05</span></div>
                 <div class="sch-row"><span class="label">TOKEN_FPS:</span><span class="val">~70 t/s</span></div>
                 <div class="sch-row"><span class="label">URL:</span><span class="val text-orange">CYRHIELAI.APP</span></div>

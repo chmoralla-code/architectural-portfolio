@@ -114,22 +114,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const distX = e.clientX - targetCenterX;
         const distY = e.clientY - targetCenterY;
         
-        // Apply magnetic spring force to pull element slightly towards cursor
-        const pullStrength = 0.35;
-        this.style.transform = `translate(${distX * pullStrength}px, ${distY * pullStrength}px) scale(1.05)`;
+        // Exclude gallery cards from raw translate pulls to prevent flexbox rendering jitters
+        if (!this.classList.contains('gallery-card')) {
+          const pullStrength = 0.35;
+          this.style.transform = `translate(${distX * pullStrength}px, ${distY * pullStrength}px) scale(1.05)`;
+        }
         
         // Snap cursor target coordinates directly to target center (magnet effect)
         state.targetMouseX = targetCenterX + distX * 0.2;
         state.targetMouseY = targetCenterY + distY * 0.2;
         
-        // Expand crosshair magnifying ring
-        elements.customCursor.classList.add('cursor-active');
+        // Expand crosshair magnifying ring if not active on a gallery card
+        if (!this.classList.contains('gallery-card')) {
+          elements.customCursor.classList.add('cursor-active');
+        }
       });
 
       target.addEventListener('mouseleave', function() {
         // Smooth snap back
-        this.style.transform = 'translate(0px, 0px) scale(1)';
-        elements.customCursor.classList.remove('cursor-active');
+        if (!this.classList.contains('gallery-card')) {
+          this.style.transform = 'translate(0px, 0px) scale(1)';
+          elements.customCursor.classList.remove('cursor-active');
+        }
       });
     });
 
@@ -662,7 +668,46 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* --------------------------------------------------------------------------
-     11. SYSTEM BOOTSTRAP INITIALIZATION
+     11. HORIZONTAL EXPANDING GALLERY VIDEO INTERACTION CONTROLS
+     -------------------------------------------------------------------------- */
+  function initWorkGalleryVideos() {
+    const cards = document.querySelectorAll('.gallery-card');
+    if (!cards.length) return;
+
+    cards.forEach(card => {
+      const video = card.querySelector('.card-video');
+      
+      // Mouse interaction listeners
+      card.addEventListener('mouseenter', () => {
+        // Toggle play cursor glow class on body
+        elements.body.classList.add('cursor-gallery-active');
+        
+        if (video) {
+          // Play the video and catch promise to avoid autoplay blocking errors
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              // Video played successfully
+            }).catch(error => {
+              console.warn('Autoplay prevented or video load failed:', error);
+            });
+          }
+        }
+      });
+
+      card.addEventListener('mouseleave', () => {
+        // Remove play cursor glow
+        elements.body.classList.remove('cursor-gallery-active');
+        
+        if (video) {
+          video.pause();
+        }
+      });
+    });
+  }
+
+  /* --------------------------------------------------------------------------
+     12. SYSTEM BOOTSTRAP INITIALIZATION
      -------------------------------------------------------------------------- */
   function bootstrap() {
     initInertiaScroll();
@@ -672,6 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAccordions();
     initDraftingCanvas();
     initContactForm();
+    initWorkGalleryVideos();
     
     // Trigger loop ticker
     requestAnimationFrame(animateEngine);
