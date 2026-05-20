@@ -501,11 +501,32 @@ document.addEventListener('DOMContentLoaded', () => {
       const submitBtn = elements.contactForm.querySelector('.submit-btn');
       const originText = submitBtn.querySelector('.btn-text').innerHTML;
       
+      // Extract form values
+      const formData = new FormData(elements.contactForm);
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const details = formData.get('details');
+      
       // Update HUD to alert transaction status
       submitBtn.querySelector('.btn-text').innerHTML = '<i class="fa-solid fa-sync fa-spin"></i> DISPATCHING_METRICS...';
       submitBtn.disabled = true;
       
-      setTimeout(() => {
+      const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwZmVsd3F2b2xheGlzbWRwampjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MDY4NTUsImV4cCI6MjA5MzI4Mjg1NX0.zT6SyMaEoMQaOSOmkFX_OfwZ4wkOfb__rRIjVtUoFGg';
+      
+      fetch('https://ppfelwqvolaxismdpjjc.supabase.co/rest/v1/contact_messages', {
+        method: 'POST',
+        headers: {
+          'apikey': anonKey,
+          'Authorization': `Bearer ${anonKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ name, email, details })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response error');
+        }
         // Success dialog
         submitBtn.querySelector('.btn-text').innerHTML = '<i class="fa-solid fa-circle-check"></i> TRANSMISSION_SUCCESSFUL!';
         submitBtn.style.borderColor = 'var(--accent-cyan)';
@@ -513,14 +534,22 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Reset form inputs
         elements.contactForm.reset();
-        
+      })
+      .catch(error => {
+        console.error('Submission failed:', error);
+        // Error dialog
+        submitBtn.querySelector('.btn-text').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> TRANSMISSION_FAILED! RETRY.';
+        submitBtn.style.borderColor = 'var(--accent-orange)';
+        submitBtn.style.color = 'var(--accent-orange)';
+      })
+      .finally(() => {
         setTimeout(() => {
           submitBtn.querySelector('.btn-text').innerHTML = originText;
           submitBtn.disabled = false;
           submitBtn.style.borderColor = '';
           submitBtn.style.color = '';
         }, 3000);
-      }, 1500);
+      });
     });
   }
 
