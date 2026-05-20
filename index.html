@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYRHIEL // INTERACTIVE ARCHITECTURAL PORTFOLIO</title>
+  <meta name="description" content="Awwwards-level interactive architectural and automation portfolio of Cyrhiel H. Moralla.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons for Industrial Feel -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-blueprint cursor-none select-none">
+
+  <!-- Custom Crosshair Cursor with X-Ray Magnifier Lens -->
+  <div id="custom-cursor">
+    <div class="cursor-dot"></div>
+    <div class="cursor-crosshair-h"></div>
+    <div class="cursor-crosshair-v"></div>
+    <div class="cursor-coords">X: <span id="cursor-x">0</span> Y: <span id="cursor-y">0</span></div>
+    <!-- Interactive X-Ray Lens (Visual Ring) -->
+    <div class="cursor-lens"></div>
+  </div>
+
+  <!-- CAD Control panel & HUD Overlay (Floating UI) -->
+  <div class="cad-hud top-hud">
+    <div class="hud-item border-right font-mono">
+      <span class="hud-label text-orange"><i class="fa-solid fa-compass-drafting"></i> SYSTEM:</span>
+      <span class="hud-val">STABLE // ONLINE</span>
+    </div>
+    <div class="hud-item border-right font-mono hide-mobile">
+      <span class="hud-label"><i class="fa-solid fa-maximize"></i> RENDERER:</span>
+      <span class="hud-val">GPU_ACCEL_60HZ</span>
+    </div>
+    <div class="hud-item font-mono hide-mobile">
+      <span class="hud-label"><i class="fa-solid fa-arrows-up-down-left-right"></i> VELOCITY:</span>
+      <span class="hud-val" id="scroll-velocity">0.0 px/s</span>
+    </div>
+  </div>
+
+  <div class="cad-hud bottom-hud font-mono">
+    <div class="hud-item border-right">
+      <span class="hud-label">LOC:</span>
+      <span class="hud-val">BOHOL, PH // 9.67° N, 123.87° E</span>
+    </div>
+    <div class="hud-item border-right hide-mobile">
+      <span class="hud-label">SCALE:</span>
+      <span class="hud-val">1 : 25 [METRIC]</span>
+    </div>
+    <div class="hud-item">
+      <span class="hud-label text-cyan">SCROLL:</span>
+      <span class="hud-val" id="scroll-percentage">0%</span>
+    </div>
+  </div>
+
+  <!-- Rotating Drafting Protractor (Left Side decoration) -->
+  <div id="scroll-protractor" class="protractor-widget">
+    <svg viewBox="0 0 100 100" class="protractor-svg">
+      <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="0.5" fill="none" stroke-dasharray="1 3"/>
+      <circle cx="50" cy="50" r="38" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="15 3"/>
+      <circle cx="50" cy="50" r="30" stroke="currentColor" stroke-width="0.75" fill="none"/>
+      <!-- Dimension markers -->
+      <line x1="50" y1="5" x2="50" y2="10" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="95" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="50" y1="95" x2="50" y2="90" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="5" y1="50" x2="10" y2="50" stroke="currentColor" stroke-width="1.5"/>
+      <!-- Indicator needle -->
+      <line x1="50" y1="50" x2="50" y2="15" stroke="var(--accent-orange)" stroke-width="2" id="protractor-needle"/>
+      <circle cx="50" cy="50" r="4" fill="var(--accent-orange)"/>
+    </svg>
+    <div class="protractor-degree font-mono"><span id="protractor-angle">0</span>°</div>
+  </div>
+
+  <!-- Perspective Grid Lines Background (Interactive) -->
+  <div class="perspective-grid-container" id="perspective-grid">
+    <div class="perspective-grid-inner"></div>
+  </div>
+
+  <!-- Global Custom Blueprint Background Grid -->
+  <div class="blueprint-grid-canvas"></div>
+
+  <!-- Drafting Ruler Overlays (Visual Borders) -->
+  <div class="ruler-y-left hide-mobile font-mono"></div>
+  <div class="ruler-x-top hide-mobile font-mono"></div>
+
+  <!-- Fixed Navigation Header -->
+  <header class="fixed-header">
+    <div class="header-logo font-mono">
+      <span class="logo-box">CYRHIEL</span>
+      <span class="logo-text">// ARCH_STUDIO</span>
+    </div>
+    
+    <nav class="header-nav font-mono">
+      <a href="#hero" class="magnetic-target hover-underline active">01//HERO</a>
+      <a href="#about" class="magnetic-target hover-underline">02//PHILOSOPHY</a>
+      <a href="#work" class="magnetic-target hover-underline">03//SELECTED_WORKS</a>
+      <a href="#drafting-table" class="magnetic-target hover-underline">04//DRAFT_BOARD</a>
+      <a href="#contact" class="magnetic-target hover-underline">05//TRANSMIT</a>
+    </nav>
+
+    <!-- CAD Mode Selector Button -->
+    <div class="mode-selector font-mono">
+      <button class="mode-toggle-btn magnetic-target" id="wireframe-toggle" title="Toggle CAD Wireframe Viewport">
+        <span class="mode-dot"></span>
+        <span class="mode-text">CAD_WIREFRAME: OFF</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Inertia Smooth Scrolling Content Wrapper -->
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+
+      <!-- HERO SECTION -->
+      <section id="hero" class="hero-section">
+        <!-- Parallax Background Structural SVG -->
+        <div class="hero-structural-bg">
+          <svg viewBox="0 0 1000 1000" class="structural-svg" id="hero-svg">
+            <defs>
+              <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent-cyan)" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="var(--accent-cyan)" stop-opacity="0.1"/>
+              </linearGradient>
+            </defs>
+            <!-- Columns and Grid Lines -->
+            <g stroke="var(--border-color)" stroke-width="0.5" fill="none" opacity="0.3">
+              <line x1="100" y1="0" x2="100" y2="1000" />
+              <line x1="300" y1="0" x2="300" y2="1000" />
+              <line x1="500" y1="0" x2="500" y2="1000" />
+              <line x1="700" y1="0" x2="700" y2="1000" />
+              <line x1="900" y1="0" x2="900" y2="1000" />
+              <line x1="0" y1="200" x2="1000" y2="200" />
+              <line x1="0" y1="500" x2="1000" y2="500" />
+              <line x1="0" y1="800" x2="1000" y2="800" />
+            </g>
+            <!-- Concentric Circles representing compass points -->
+            <circle cx="500" cy="500" r="250" stroke="var(--border-color)" stroke-width="0.75" fill="none" stroke-dasharray="5 5" opacity="0.4"/>
+            <circle cx="500" cy="500" r="400" stroke="var(--border-color)" stroke-width="0.5" fill="none" opacity="0.2"/>
+            <!-- Rotating central structural gear / compass -->
+            <g id="hero-rotating-element" transform="translate(500, 500)">
+              <circle cx="0" cy="0" r="100" stroke="var(--accent-cyan)" stroke-width="1" fill="none"/>
+              <line x1="-150" y1="0" x2="150" y2="0" stroke="var(--accent-cyan)" stroke-width="1"/>
+              <line x1="0" y1="-150" x2="0" y2="150" stroke="var(--accent-cyan)" stroke-width="1"/>
+              <path d="M-80 -80 L80 80 M-80 80 L80 -80" stroke="var(--accent-cyan)" stroke-width="0.75" stroke-dasharray="2 2"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="hero-container">
+          <div class="hero-content">
+            <!-- Dynamic CAD Title Tag -->
+            <div class="cad-specs-header font-mono">
+              <span class="spec-id">PROJECT_REF: CM_2026</span>
+              <span class="spec-separator">//</span>
+              <span class="spec-ver">REV_3.5_FLASH</span>
+            </div>
+
+            <!-- Kinetic Heading containing Large Bold Marquee Text -->
+            <h1 class="hero-title uppercase" id="hero-main-title">
+              <span class="line font-space animate-reveal">CYRHIEL H.</span>
+              <span class="line font-space text-glow animate-reveal delay-1">MORALLA</span>
+            </h1>
+
+            <!-- Exploded Technical specs grid -->
+            <div class="hero-tech-grid font-mono">
+              <div class="tech-grid-cell">
+                <div class="cell-num">01 /</div>
+                <div class="cell-title text-orange">CORE_ROLE</div>
+                <div class="cell-desc">PROCESS AUTOMATION ENGINEER</div>
+              </div>
+              <div class="tech-grid-cell">
+                <div class="cell-num">02 /</div>
+                <div class="cell-title text-cyan">CAPABILITY</div>
+                <div class="cell-desc">BUSINESS PROCESS SCALING // INTERACTION DESIGN</div>
+              </div>
+              <div class="tech-grid-cell">
+                <div class="cell-num">03 /</div>
+                <div class="cell-title">ARCH_STYLE</div>
+                <div class="cell-desc">DIGITAL BRUTALISM // blueprint STRUCTURALISM</div>
+              </div>
+            </div>
+
+            <!-- Kinetic Running Marquee Ribbon -->
+            <div class="marquee-ribbon font-mono">
+              <div class="marquee-content" id="hero-marquee">
+                <span>MAKE BUSINESS SCALABLE THRU CODE // AUTOMATE PROCESSES // INCREASE REVENUES // OPTIMIZE WORKFLOWS // DESIGN BRUTALIST INTERFACES // </span>
+                <span>MAKE BUSINESS SCALABLE THRU CODE // AUTOMATE PROCESSES // INCREASE REVENUES // OPTIMIZE WORKFLOWS // DESIGN BRUTALIST INTERFACES // </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Profile Framing Section -->
+          <div class="hero-profile-area" id="hero-profile-container">
+            <div class="profile-card-3d magnetic-target">
+              <div class="profile-blueprint-frame"></div>
+              <!-- Dimensions spec marks -->
+              <div class="profile-spec-mark top-spec font-mono">w: 420.00mm</div>
+              <div class="profile-spec-mark right-spec font-mono">h: 680.00mm</div>
+              
+              <div class="profile-image-container">
+                <img src="cyrhiel_profile.png" alt="Cyrhiel H. Moralla Profile Photo" class="profile-img">
+                <div class="profile-scanner-line"></div>
+                <div class="profile-glitch-overlay"></div>
+              </div>
+            </div>
+            
+            <!-- Structural Coordinate boxes around picture -->
+            <div class="profile-decor-nodes font-mono">
+              <div class="node-box top-left">+ NODE_01</div>
+              <div class="node-box top-right">COORD_X: 742</div>
+              <div class="node-box bottom-left">SCALE_F: 1.0</div>
+              <div class="node-box bottom-right">SEC_01 // OK</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-spec-indicator font-mono">
+          <div class="indicator-mouse">
+            <div class="mouse-wheel"></div>
+          </div>
+          <div class="indicator-text">SCROLL_DOWN_TO_DRAFT</div>
+        </div>
+      </section>
+
+
+      <!-- PHILOSOPHY / ABOUT SECTION -->
+      <section id="about" class="about-section scroll-reveal">
+        <div class="section-divider">
+          <span class="divider-line"></span>
+          <span class="divider-dot font-mono">SECTION_02</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <div class="about-container">
+          <div class="about-drawing-panel">
+            <div class="blueprint-block-header font-mono">
+              <span class="block-title"><i class="fa-solid fa-cube"></i> EXPLODED_SCHEMATIC_VIEW</span>
+              <span class="block-scale">SCALE 1:10</span>
+            </div>
+            
+            <!-- Animated Self-Assembling SVG isometric structures -->
+            <div class="isometric-structure-wrapper">
+              <svg viewBox="0 0 400 400" class="isometric-svg" id="isometric-building-svg">
+                <!-- Grid background -->
+                <path d="M 50 200 L 200 120 L 350 200 L 200 280 Z" stroke="var(--border-color)" stroke-width="0.5" fill="none" opacity="0.3"/>
+                <path d="M 50 280 L 200 200 L 350 280 L 200 360 Z" stroke="var(--border-color)" stroke-width="0.5" fill="none" opacity="0.3"/>
+                
+                <!-- Core 3D structural lines (Drawing on scroll) -->
+                <!-- Foundation Base -->
+                <polygon points="200,320 280,280 200,240 120,280" stroke="var(--accent-cyan)" stroke-dasharray="1000" stroke-dashoffset="1000" stroke-width="1.5" fill="rgba(6, 182, 212, 0.05)" class="draw-line" id="iso-base"/>
+                
+                <!-- Vertical Columns -->
+                <line x1="120" y1="280" x2="120" y2="160" stroke="var(--accent-cyan)" stroke-width="1.5" stroke-dasharray="500" stroke-dashoffset="500" class="draw-line" id="iso-col1"/>
+                <line x1="200" y1="320" x2="200" y2="200" stroke="var(--accent-cyan)" stroke-width="1.5" stroke-dasharray="500" stroke-dashoffset="500" class="draw-line" id="iso-col2"/>
+                <line x1="280" y1="280" x2="280" y2="160" stroke="var(--accent-cyan)" stroke-width="1.5" stroke-dasharray="500" stroke-dashoffset="500" class="draw-line" id="iso-col3"/>
+                
+                <!-- Mid Level Floor Slab -->
+                <polygon points="200,200 280,160 200,120 120,160" stroke="var(--accent-cyan)" stroke-width="1.5" stroke-dasharray="1000" stroke-dashoffset="1000" fill="rgba(6, 182, 212, 0.08)" class="draw-line" id="iso-slab1"/>
+                
+                <!-- Upper Columns -->
+                <line x1="160" y1="140" x2="160" y2="60" stroke="var(--accent-orange)" stroke-width="1.5" stroke-dasharray="500" stroke-dashoffset="500" class="draw-line" id="iso-col4"/>
+                <line x1="240" y1="140" x2="240" y2="60" stroke="var(--accent-orange)" stroke-width="1.5" stroke-dasharray="500" stroke-dashoffset="500" class="draw-line" id="iso-col5"/>
+                
+                <!-- Roof truss structure -->
+                <line x1="160" y1="60" x2="200" y2="25" stroke="var(--accent-orange)" stroke-width="2" class="draw-line" id="iso-truss1"/>
+                <line x1="240" y1="60" x2="200" y2="25" stroke="var(--accent-orange)" stroke-width="2" class="draw-line" id="iso-truss2"/>
+                <line x1="160" y1="60" x2="240" y2="60" stroke="var(--accent-orange)" stroke-width="1" class="draw-line" id="iso-truss3"/>
+                
+                <!-- Dimensions dynamic cursor tracking -->
+                <line x1="295" y1="280" x2="295" y2="160" stroke="var(--accent-orange)" stroke-width="0.5" stroke-dasharray="2 2"/>
+                <text x="305" y="225" fill="var(--accent-orange)" class="font-mono text-small" style="font-size:10px;">H: 3.60m</text>
+              </svg>
+            </div>
+            
+            <div class="blueprint-block-footer font-mono">
+              <span class="footer-desc">AUTO_BUILD_STRUCTURAL_MATRIX: COMPLETED</span>
+            </div>
+          </div>
+
+          <div class="about-text-panel">
+            <h2 class="font-space uppercase section-heading">CORE_PHILOSOPHY</h2>
+            
+            <!-- Interactive Brutalist Philosophy breakdown -->
+            <div class="philosophy-statement animate-on-scroll">
+              <p class="p-highlight font-space uppercase">
+                "MY GOAL IS TO MAKE YOUR BUSINESS MAKE MORE MONEY THRU AUTOMATION"
+              </p>
+            </div>
+
+            <!-- Dynamic Specs collapse/list -->
+            <div class="technical-specs-list font-mono">
+              <div class="spec-item-collapse active">
+                <div class="spec-item-trigger magnetic-target">
+                  <span class="spec-number">01 /</span>
+                  <span class="spec-title">STRUCTURAL AUTOMATION SERVICES</span>
+                  <span class="spec-icon"><i class="fa-solid fa-plus"></i></span>
+                </div>
+                <div class="spec-item-content">
+                  <p>Building high-integrity, fail-safe background automation pipelines that streamline operational bottlenecks. I replace repetitive human actions with highly optimized server processes, scaling transactions and drastically cutting structural operating costs.</p>
+                  <ul class="spec-checklist">
+                    <li><i class="fa-solid fa-circle-check text-cyan"></i> Custom API Integrations & Webhooks</li>
+                    <li><i class="fa-solid fa-circle-check text-cyan"></i> Headless Browser Scrapers & Data Harvesters</li>
+                    <li><i class="fa-solid fa-circle-check text-cyan"></i> Dynamic Database Normalizers</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="spec-item-collapse">
+                <div class="spec-item-trigger magnetic-target">
+                  <span class="spec-number">02 /</span>
+                  <span class="spec-title">AESTHETIC BLUEPRINT ARCHITECTURE</span>
+                  <span class="spec-icon"><i class="fa-solid fa-plus"></i></span>
+                </div>
+                <div class="spec-item-content">
+                  <p>A website shouldn't just exist—it must leave a lasting psychological impact. By merging digital brutalist aesthetics, interactive typography, structural grid designs, and seamless micro-animations, I construct experiences that command attention.</p>
+                  <ul class="spec-checklist">
+                    <li><i class="fa-solid fa-circle-check text-cyan"></i> Award-Winning Kinetic Layouts</li>
+                    <li><i class="fa-solid fa-circle-check text-cyan"></i> Glassmorphic & Vector Visual Systems</li>
+                    <li><i class="fa-solid fa-circle-check text-cyan"></i> Liquid 60fps Micro-Interactions</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="spec-item-collapse">
+                <div class="spec-item-trigger magnetic-target">
+                  <span class="spec-number">03 /</span>
+                  <span class="spec-title">AUTOMATED REVENUE SCALING</span>
+                  <span class="spec-icon"><i class="fa-solid fa-plus"></i></span>
+                </div>
+                <div class="spec-item-content">
+                  <p>Technology must serve the bottom line. Every wireframe designed and database schema built is strategically optimized to generate high transactional volume and elevate conversion efficiency.</p>
+                  <ul class="spec-checklist">
+                    <li><i class="fa-solid fa-circle-check text-cyan"></i> Transaction Path Minimization</li>
+                    <li><i class="fa-solid fa-circle-check text-cyan"></i> High-Speed Edge Web Delivery</li>
+                    <li><i class="fa-solid fa-circle-check text-cyan"></i> Multi-Platform Automated Schedulers</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- SELECTED WORKS SECTION -->
+      <section id="work" class="work-section scroll-reveal">
+        <div class="section-divider">
+          <span class="divider-line"></span>
+          <span class="divider-dot font-mono">SECTION_03</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <div class="work-header">
+          <h2 class="font-space uppercase section-heading">SELECTED_WORKS</h2>
+          <div class="work-spec-counter font-mono">
+            <span class="label">CATALOGED:</span>
+            <span class="count text-orange">[05]</span>
+          </div>
+        </div>
+
+        <!-- Portfolio grid displaying interactive panels -->
+        <div class="work-grid">
+          
+          <!-- WORK ITEM 01 -->
+          <div class="work-panel magnetic-target" data-id="1">
+            <div class="panel-blueprint-grid"></div>
+            <div class="panel-border-corner top-l"></div>
+            <div class="panel-border-corner top-r"></div>
+            <div class="panel-border-corner bottom-l"></div>
+            <div class="panel-border-corner bottom-r"></div>
+            
+            <div class="panel-img-frame">
+              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777731099352-8k64q.jpg" alt="Lending Website" class="panel-img">
+              <div class="panel-overlay-tech font-mono">
+                <span>FRONTEND: HTML5 / VANILLA_JS</span>
+                <span>STYLING: MODERN_CSS_GRID</span>
+                <span>STATUS: LIVE // DEPLOYED</span>
+              </div>
+            </div>
+
+            <div class="panel-info">
+              <div class="panel-meta font-mono">
+                <span class="meta-client">CLIENT: FOREIGN CLIENT</span>
+                <span class="meta-year">[2026]</span>
+              </div>
+              <h3 class="panel-title font-space">LENDING WEBSITE</h3>
+              <p class="panel-description">Engineered to streamline and automate transaction workflows. Features structural form validation, high-speed calculations, and visual transaction tracking.</p>
+              
+              <!-- Blueprint technical specs foldout -->
+              <div class="panel-schematic font-mono">
+                <div class="sch-row"><span class="label">MODULE_ID:</span><span class="val text-cyan">T-LEND-01</span></div>
+                <div class="sch-row"><span class="label">LATENCY_F:</span><span class="val">~0.12s</span></div>
+                <div class="sch-row"><span class="label">SCALE_FACTOR:</span><span class="val text-orange">1.0</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WORK ITEM 02 -->
+          <div class="work-panel magnetic-target" data-id="2">
+            <div class="panel-blueprint-grid"></div>
+            <div class="panel-border-corner top-l"></div>
+            <div class="panel-border-corner top-r"></div>
+            <div class="panel-border-corner bottom-l"></div>
+            <div class="panel-border-corner bottom-r"></div>
+            
+            <div class="panel-img-frame">
+              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777731486275-2v4aq.jpg" alt="Personal PisoWiFi" class="panel-img">
+              <div class="panel-overlay-tech font-mono">
+                <span>ENGINE: captive_portal</span>
+                <span>AUTHENTICATION: referral_auth</span>
+                <span>INTERFACE: custom_css</span>
+              </div>
+            </div>
+
+            <div class="panel-info">
+              <div class="panel-meta font-mono">
+                <span class="meta-client">CLIENT: PERSONAL</span>
+                <span class="meta-year">[2026]</span>
+              </div>
+              <h3 class="panel-title font-space">PERSONAL PISOWIFI</h3>
+              <p class="panel-description">Custom captive portal system designed to handle high transaction throughput, featuring elegant user validation, automated data provisioning, and integrated billing.</p>
+              
+              <div class="panel-schematic font-mono">
+                <div class="sch-row"><span class="label">MODULE_ID:</span><span class="val text-cyan">P-WIFI-02</span></div>
+                <div class="sch-row"><span class="label">BANDWIDTH:</span><span class="val">OPT_DYN</span></div>
+                <div class="sch-row"><span class="label">ENCRYPTION:</span><span class="val text-orange">AES_256</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WORK ITEM 03 -->
+          <div class="work-panel magnetic-target" data-id="3">
+            <div class="panel-blueprint-grid"></div>
+            <div class="panel-border-corner top-l"></div>
+            <div class="panel-border-corner top-r"></div>
+            <div class="panel-border-corner bottom-l"></div>
+            <div class="panel-border-corner bottom-r"></div>
+            
+            <div class="panel-img-frame">
+              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777733575678-d7lex.jpg" alt="Facebook Boosting Website" class="panel-img">
+              <div class="panel-overlay-tech font-mono">
+                <span>SERVICE: fb_api_boost</span>
+                <span>DISPATCH: automatic</span>
+                <span>SYSTEM: async_task</span>
+              </div>
+            </div>
+
+            <div class="panel-info">
+              <div class="panel-meta font-mono">
+                <span class="meta-client">CLIENT: PERSONAL</span>
+                <span class="meta-year">[2026]</span>
+              </div>
+              <h3 class="panel-title font-space">FACEBOOK BOOSTING</h3>
+              <p class="panel-description">Automation web suite triggering asynchronous post engagements. Dramatically improves public page visibility and brand recognition through programmatic dispatchers.</p>
+              
+              <div class="panel-schematic font-mono">
+                <div class="sch-row"><span class="label">MODULE_ID:</span><span class="val text-cyan">A-FB-03</span></div>
+                <div class="sch-row"><span class="label">API_PING:</span><span class="val">~45ms</span></div>
+                <div class="sch-row"><span class="label">SCALING_VAL:</span><span class="val text-orange">MAX_THR</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WORK ITEM 04 -->
+          <div class="work-panel magnetic-target" data-id="4">
+            <div class="panel-blueprint-grid"></div>
+            <div class="panel-border-corner top-l"></div>
+            <div class="panel-border-corner top-r"></div>
+            <div class="panel-border-corner bottom-l"></div>
+            <div class="panel-border-corner bottom-r"></div>
+            
+            <div class="panel-img-frame">
+              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1777818565209-mp88.png" alt="Bohol Shopping Local" class="panel-img">
+              <div class="panel-overlay-tech font-mono">
+                <span>PLATFORM: localized_ecom</span>
+                <span>ROUTING: geofenced</span>
+                <span>STACK: HTML5 / CSS3 / JS</span>
+              </div>
+            </div>
+
+            <div class="panel-info">
+              <div class="panel-meta font-mono">
+                <span class="meta-client">CLIENT: LOCAL BOHOL</span>
+                <span class="meta-year">[2026]</span>
+              </div>
+              <h3 class="panel-title font-space">BOHOL SHOPPING LOCAL</h3>
+              <p class="panel-description">Optimized local ecommerce platform engineered to decrease delivery delays and maximize transaction speeds within Tagbilaran City using localized routing networks.</p>
+              
+              <div class="panel-schematic font-mono">
+                <div class="sch-row"><span class="label">MODULE_ID:</span><span class="val text-cyan">E-SHOP-04</span></div>
+                <div class="sch-row"><span class="label">GEO_GATE:</span><span class="val">BOHOL_6300</span></div>
+                <div class="sch-row"><span class="label">SPEED_INDEX:</span><span class="val text-orange">A+ // OPT</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WORK ITEM 05 -->
+          <div class="work-panel magnetic-target" data-id="5">
+            <div class="panel-blueprint-grid"></div>
+            <div class="panel-border-corner top-l"></div>
+            <div class="panel-border-corner top-r"></div>
+            <div class="panel-border-corner bottom-l"></div>
+            <div class="panel-border-corner bottom-r"></div>
+            
+            <div class="panel-img-frame">
+              <img src="https://ppfelwqvolaxismdpjjc.supabase.co/storage/v1/object/public/portfolio_images/1778482556323-3cdya9.png" alt="Cyrhiel AI" class="panel-img">
+              <div class="panel-overlay-tech font-mono">
+                <span>CORE: generative_ai</span>
+                <span>HOSTING: vercel_edge</span>
+                <span>INTEGRATION: openai_api</span>
+              </div>
+            </div>
+
+            <div class="panel-info">
+              <div class="panel-meta font-mono">
+                <span class="meta-client">HOST: CYRHIELAI</span>
+                <span class="meta-year">[2026]</span>
+              </div>
+              <h3 class="panel-title font-space">AI AGENT PORTAL</h3>
+              <p class="panel-description">An advanced, highly interactive artificial intelligence interface hosted on Vercel Edge. Performs automated data processing, structural text analysis, and automation scheduling.</p>
+              
+              <div class="panel-schematic font-mono">
+                <div class="sch-row"><span class="label">MODULE_ID:</span><span class="val text-cyan">AI-TERM-05</span></div>
+                <div class="sch-row"><span class="label">TOKEN_FPS:</span><span class="val">~70 t/s</span></div>
+                <div class="sch-row"><span class="label">URL:</span><span class="val text-orange">CYRHIELAI.APP</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- INTERACTIVE DRAFTING CANVAS SECTION -->
+      <section id="drafting-table" class="drafting-section scroll-reveal">
+        <div class="section-divider">
+          <span class="divider-line"></span>
+          <span class="divider-dot font-mono">SECTION_04</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <div class="drafting-header">
+          <div class="header-texts">
+            <h2 class="font-space uppercase section-heading">INTERACTIVE_DRAFTING_BOARD</h2>
+            <p class="section-subtitle font-mono">DRAW DIRECTLY ON THE VIEWPORT GRID // CLICK TO DROP STRUCTURAL COLUMNS</p>
+          </div>
+          <div class="drafting-tools font-mono">
+            <button class="tool-btn active magnetic-target" id="tool-draw" title="Draw Vectors"><i class="fa-solid fa-pencil"></i> DRAW</button>
+            <button class="tool-btn magnetic-target" id="tool-column" title="Drop Structural Columns"><i class="fa-solid fa-table-columns"></i> COLUMN</button>
+            <button class="tool-btn magnetic-target" id="tool-clear" title="Clear Drafting Layer"><i class="fa-solid fa-trash-can"></i> CLEAR</button>
+          </div>
+        </div>
+
+        <!-- The actual drawing canvas container -->
+        <div class="canvas-container-outer">
+          <div class="canvas-grid-specs font-mono">
+            <div class="spec-left">GRID_SNAP: 10px // GRID_SIZE: 40px</div>
+            <div class="spec-right">ACTIVE_DRAFT: <span id="active-vectors">0</span> LINES</div>
+          </div>
+          
+          <div class="canvas-frame">
+            <canvas id="interactive-drafting-canvas"></canvas>
+            
+            <div class="canvas-coordinates-x font-mono">
+              <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+            </div>
+            <div class="canvas-coordinates-y font-mono">
+              <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- CONTACT SECTION -->
+      <section id="contact" class="contact-section scroll-reveal">
+        <div class="section-divider">
+          <span class="divider-line"></span>
+          <span class="divider-dot font-mono">SECTION_05</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <div class="contact-container">
+          <div class="contact-form-panel">
+            <div class="blueprint-form-header font-mono">
+              <span class="form-title"><i class="fa-solid fa-file-invoice"></i> INITIATE_TRANSMISSION_PROTOCOL</span>
+              <span class="form-ref">REF: FORM_CM_IN</span>
+            </div>
+
+            <!-- Form designed as blueprint spec submit sheet -->
+            <form id="architectural-contact-form" class="blueprint-form">
+              <div class="form-row-grid">
+                <div class="input-container font-mono">
+                  <label for="name" class="input-label text-cyan">&gt; NAME:</label>
+                  <input type="text" id="name" name="name" placeholder="SPECIFY CLIENT NAME" required class="blueprint-input">
+                  <span class="input-grid-snap"></span>
+                </div>
+                <div class="input-container font-mono">
+                  <label for="email" class="input-label text-cyan">&gt; EMAIL:</label>
+                  <input type="email" id="email" name="email" placeholder="SPECIFY COMMS GATEWAY" required class="blueprint-input">
+                  <span class="input-grid-snap"></span>
+                </div>
+              </div>
+
+              <div class="input-container font-mono">
+                <label for="details" class="input-label text-cyan">&gt; PROJECT_DESCRIPTION:</label>
+                <textarea id="details" name="details" rows="5" placeholder="DESCRIBE AUTOMATION SCOPE, BUDGET METRICS, AND STRUCTURAL EXPECTATIONS" required class="blueprint-input blueprint-textarea"></textarea>
+                <span class="input-grid-snap"></span>
+              </div>
+
+              <!-- Button styled like a technical execution dispatch -->
+              <button type="submit" class="submit-btn font-mono magnetic-target">
+                <span class="btn-grid-line"></span>
+                <span class="btn-text"><i class="fa-solid fa-arrow-right-long"></i> DISPATCH_TRANSMISSION</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- HQ Details structured as geographic vectors -->
+          <div class="contact-info-panel font-mono">
+            <h2 class="font-space uppercase section-heading">COMMUNICATION_CHANNELS</h2>
+            
+            <div class="info-block border-l-orange">
+              <div class="info-title text-orange"><i class="fa-solid fa-building-columns"></i> HEADQUARTERS_HQ</div>
+              <div class="info-content uppercase font-mono">
+                BOHOL, TAGBILARAN CITY,<br>
+                UBUJAN 6300.<br>
+                IGLESIA NI INC. LOKAL NG UBUJAN
+              </div>
+            </div>
+
+            <div class="info-block border-l-cyan">
+              <div class="info-title text-cyan"><i class="fa-solid fa-tower-broadcast"></i> DIGITAL_GATEWAYS</div>
+              <div class="info-content">
+                <a href="mailto:cyrhielmaot@gmail.com" class="info-link hover-underline magnetic-target"><i class="fa-solid fa-envelope"></i> cyrhielmaot@gmail.com</a>
+                <a href="tel:09505339963" class="info-link hover-underline magnetic-target"><i class="fa-solid fa-phone"></i> 09505339963</a>
+              </div>
+            </div>
+
+            <div class="info-block">
+              <div class="info-title"><i class="fa-solid fa-microchip"></i> AUTOMATION_VELOCITY</div>
+              <div class="info-content font-mono uppercase">
+                24 / 7 / 365 RUNNING INSTANCES<br>
+                PROMPTS RESPONDED SECURELY
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="blueprint-footer font-mono">
+        <div class="footer-left">
+          <span>© 2026 CYRHIEL H. MORALLA</span>
+          <span class="footer-sep">//</span>
+          <span>ALL INTEGRITY PRESERVED</span>
+        </div>
+        <div class="footer-center hide-mobile">
+          <span>SCALE: 1:25 // SECTION_V</span>
+        </div>
+        <div class="footer-right">
+          <span>EST. 2026 // ARCH_STUDIO_TERMINAL</span>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- Interactive Scripts -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

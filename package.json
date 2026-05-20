@@ -1,0 +1,14 @@
+{
+  "name": "cyrhiel-portfolio",
+  "version": "1.0.0",
+  "description": "Awwwards-level Interactive Architectural Portfolio for Cyrhiel H. Moralla.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
